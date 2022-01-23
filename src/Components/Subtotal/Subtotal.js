@@ -1,9 +1,11 @@
 import React from 'react'
 import CurrencyFormat from 'react-currency-format'
 import './Subtotal.css'
-import {gettotalamount} from "../../Reducer"
+import { useNavigate } from 'react-router-dom'
+import { gettotalamount } from '../../Reducer'
 import { useStateValue } from '../../StateProvider'
 function Subtotal() {
+  const navigate = useNavigate()
   const [{ basket }, dispatch] = useStateValue()
   return (
     <div className="flex flex-col  subtotal ">
@@ -26,9 +28,11 @@ function Subtotal() {
         prefix={'$'}
       />
       <div className="grid place-items-center">
-        <button className="bg-yellow-400 font-bold p-2 rounded-lg mt-2  ">
-          Proceed To Checkout
-        </button>
+        
+          <button onClick={e=>navigate('/payment')} className="bg-yellow-400 font-bold p-2 rounded-lg mt-2">
+            Proceed To Checkout
+          </button>
+        
       </div>
     </div>
   )
