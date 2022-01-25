@@ -18,6 +18,11 @@ const reducer = (state, action) => {
         ...state,
         user: action.payload,
       }
+
+      case 'EMPTY_BASKET':return {
+        ...state,
+        basket:[]
+      }
     case 'Remove_From_Cart':
       const index = state.basket.findIndex((item) => item.id === action.id)
 

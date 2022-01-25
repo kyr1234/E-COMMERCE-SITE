@@ -1,22 +1,68 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useStateValue } from '../../StateProvider'
+import axios from '../../axios'
 import CurrencyFormat from 'react-currency-format'
 import Checkoutcard from '../Checkoutcard/Checkoutcard'
 import { gettotalamount } from '../../Reducer'
-
+//import { db } from '../../firebase'
 function Payment() {
   const [{ basket, user }, dispatch] = useStateValue()
   const [error, seterror] = useState(null)
   const [disable, setdisable] = useState(true)
   const [succeeded, setsucceeded] = useState(false)
   const [processing, setprocessing] = useState('')
+  const [clientsecret, setclientsecret] = useState(true)
+  const navigate = useNavigate()
 
   const stripe = useStripe()
   const elements = useElements()
 
-  const handlesubmit = (e) => {}
+  //Use to make the stripe slientsecret
+
+  useEffect(() => {
+    const genrateclientsecret = async () => {
+      const response = await axios({
+        method: 'post',
+        url: `/payments/create?total=${gettotalamount(basket)}`,
+      })
+      setclientsecret(response.data.clientSecret)
+    }
+    genrateclientsecret()
+  }, [basket])
+  console.log(clientsecret)
+
+  const handlesubmit = async (e) => {
+    e.preventDefault()
+    setprocessing(true)
+
+    const payload = await stripe
+      .confirmCardPayment(clientsecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntent }) => {
+        //databse collection work
+
+        /*   db.collection('users')
+          .doc(user?.email)
+          .collection('orders')
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          })  */
+        //payment success
+        setprocessing(false)
+        seterror(null)
+        setsucceeded(true)
+        dispatch({ type: 'EMPTY_BASKET' })
+        navigate('/orders')
+      })
+  }
 
   const handlechange = (event) => {
     setdisable(event.empty)
@@ -87,6 +133,8 @@ function Payment() {
                   </button>
                 </div>
               </div>
+
+              {error && <div>{error}</div>}
             </form>
           </div>
         </div>

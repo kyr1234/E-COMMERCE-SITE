@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Orders from './Components/Orders/Order'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './Components/Header/Header'
 import Login from './Components/Login/Login'
@@ -36,6 +37,15 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/orders"
+            element={
+              <>
+                <Header />
+                <Orders />
+              </>
+            }
+          />
           <Route
             path="/payment"
             element={
