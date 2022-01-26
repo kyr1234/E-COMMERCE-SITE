@@ -14,7 +14,7 @@ function Checkout() {
           className="images"
         />
 
-        <div className="headingproduct mt-8">
+        <div className="headingproduct">
         <h4>Hello, {user?.email}</h4>
           <h2 className="font-bold text-lg border-b-4 border-black">
             YOUR SHOPPING BASKET

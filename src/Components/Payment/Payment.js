@@ -6,7 +6,7 @@ import axios from '../../axios'
 import CurrencyFormat from 'react-currency-format'
 import Checkoutcard from '../Checkoutcard/Checkoutcard'
 import { gettotalamount } from '../../Reducer'
-//import { db } from '../../firebase'
+import { db } from '../../firebase'
 function Payment() {
   const [{ basket, user }, dispatch] = useStateValue()
   const [error, seterror] = useState(null)
@@ -46,15 +46,15 @@ function Payment() {
       .then(({ paymentIntent }) => {
         //databse collection work
 
-        /*   db.collection('users')
-          .doc(user?.email)
+        db.collection('users')
+          .doc(user?.uid)
           .collection('orders')
           .doc(paymentIntent.id)
           .set({
             basket: basket,
             amount: paymentIntent.amount,
             created: paymentIntent.created,
-          })  */
+          })
         //payment success
         setprocessing(false)
         seterror(null)

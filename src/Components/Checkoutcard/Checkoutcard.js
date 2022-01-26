@@ -1,7 +1,7 @@
 import React from 'react'
 import { useStateValue } from '../../StateProvider'
 
-function Checkoutcard({ src, rating, id, title, price }) {
+function Checkoutcard({ src, rating, id, title, price ,hidden}) {
   const [{ button }, dispatch] = useStateValue()
 
   const removefunction = () => {
@@ -29,12 +29,12 @@ function Checkoutcard({ src, rating, id, title, price }) {
               <span>✨</span>
             ))}
         </div>
-        <button
+      {!hidden &&  <button
           className="bg-yellow-400 font-bold p-2 rounded-lg mt-2 "
           onClick={removefunction}
         >
           REMOVE FROM CART
-        </button>
+        </button>}
       </div>
     </div>
   )

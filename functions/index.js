@@ -22,6 +22,9 @@ app.use(
 app.use(express.json())
 
 app.get('/', (req, res) => res.status(200).send('HELLO'))
+
+
+
 app.post('/payments/create', async (req, res) => {
   const total = req.query.total
   console.log(total)
